@@ -19,7 +19,8 @@ number:
     max_value: 10000
     step: 100
     restore_value: yes
-    initial_value: 1000
+    initial_value: 3200
+
 
   # Reset total energy to given value
   - platform: template
@@ -32,6 +33,24 @@ number:
     max_value: 1000000
     step: 1
     initial_value: 0
+    
+# garage sensors
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: GPIO27
+      mode: INPUT_PULLUP
+    name: "Garage Door Left"
+    device_class: garage_door
+    id: garage_door_left
+
+  - platform: gpio
+    pin: 
+      number: GPIO14
+      mode: INPUT_PULLUP
+    name: "Garage Door Right"
+    device_class: garage_door
+    id: garage_door_right
 
 button:
   # Reset the total energy entity
@@ -54,6 +73,7 @@ sensor:
     icon: mdi:flash-outline
     accuracy_decimals: 0
     pin: ${pulse_pin}
+    internal_filter: 100ms
     on_raw_value:
       then:
         - light.turn_on:
